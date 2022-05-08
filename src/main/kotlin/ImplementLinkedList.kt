@@ -1,3 +1,6 @@
+/**
+ * Implementation of Singly-Linked List
+ */
 class LinkedList<T>(value: T) {
     private var head: Node<T>?
     private var tail: Node<T>?
