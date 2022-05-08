@@ -59,7 +59,7 @@ class LinkedList<T>(value: T) {
     }
 
     /**
-     * Given a list [2,3,4] append value 1 at position 1
+     * Given a list [2,3,4] insert value 1 at position 1
      *
      * Initial memory structure
      * [address 1] = {v:2, n:[address 3]}
@@ -81,21 +81,15 @@ class LinkedList<T>(value: T) {
      * We want to keep track of tail too, so if position == last position of list + 1
      * tail = [address 7]
      */
-    fun append(value: T, index: Int) {
+    fun insert(value: T, index: Int) {
         if (index < 0) throw IndexOutOfBoundsException("Index must be greater than or equal to 0")
         if (index > length) throw java.lang.IndexOutOfBoundsException("Index must be less than or equal to length of list")
 
         val node = Node(value, null)
 
         when (index) {
-            0 -> { // Append at start
-                node.next = head
-                head = node
-                length++
-            }
-            length -> { // Append at end
-                append(value)
-            }
+            0 -> prepend(value) // Insert at beginning
+            length -> append(value) // Insert at end
             else -> {
                 var previousItem: Node<T>? = head
                 var currentItem: Node<T>? = previousItem?.next
@@ -155,9 +149,9 @@ fun main() {
 
     val footballList = LinkedList("Chelsea")
     footballList.prepend("Barcelona")
-    footballList.append("Real Madrid", 0)
-    footballList.append("Man U", footballList.getLength())
+    footballList.insert("Real Madrid", 0)
+    footballList.insert("Man U", footballList.getLength())
     footballList.append("Sporting Lisbon")
-    footballList.append("Juventus", footballList.getLength() - 1)
+    footballList.insert("Juventus", footballList.getLength() - 1)
     printAllItemInLinkedList(footballList)
 }
