@@ -91,22 +91,34 @@ class LinkedList<T>(value: T) {
             0 -> prepend(value) // Insert at beginning
             length -> append(value) // Insert at end
             else -> {
-                var previousItem: Node<T>? = head
-                var currentItem: Node<T>? = previousItem?.next
-                var currentIndex = 1
-                do {
-                    if (currentIndex == index) {
-                        previousItem?.next = node
-                        node.next = currentItem
-                    }
-
-                    previousItem = currentItem
-                    currentItem = currentItem?.next
-                    currentIndex++
-                } while (currentIndex <= index)
+                val leadingNode = traverseToIndex(index - 1)
+                val endingNode = leadingNode.next
+                leadingNode.next = node
+                node.next = endingNode
                 length++
             }
         }
+    }
+
+    /**
+     * Traverse the list to a given index
+     *
+     * Given: [2,3,4,5], index:2
+     *
+     * Output: Node(2,next)
+     *
+     * Algorithm
+     * Keep Going until you meet index
+     */
+    private fun traverseToIndex(index: Int): Node<T> {
+        var counter = 0
+        var currentNode: Node<T> = head
+
+        while (counter < index) {
+            currentNode = currentNode.next ?: break
+            counter++
+        }
+        return currentNode
     }
 
     /**
