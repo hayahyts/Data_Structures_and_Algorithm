@@ -9,32 +9,32 @@ class LinkedList<T>(value: T) {
         length = 1
     }
 
-    /** Algorithm
-    [address 1] = {v:0, n:null}
-
-    // If first append
-    save new value at address 3
-    set this new address to the next field of [head]
-    make tail point to address 3 now
-
-    [address 1] = {v:0, n:[address 3]}
-    [address 3] = {v:1, n:null}
-
-    // If not first append
-    Save new value at address 5
-    Set this new address to the next field of tail
-
-    [address 1] = {v:0, n:[address 3]}
-    [address 3] = {v:1, n:[address 5]}
-    [address 5] = {v:2, n:null}
+    /**
+     * Given a list append value at the end
+     *
+     * Example:
+     * Given [2,3,4], append 5 at the end
+     *
+     * Algorithm
+     *
+     * Current memory
+     * [address 1] = {v:2,n:[address 3]}
+     * [address 3] = {v:2,n:[address 5]}
+     * [address 5] = {v:2,n:null}
+     *
+     * To append 5 at the end,
+     * Save 5 at [address 7]
+     * Let next of tail point to new address [address 7]
+     * Now set new address as tail of list
+     * [address 1] = {v:2,n:[address 3]}
+     * [address 3] = {v:3,n:[address 5]}
+     * [address 5] = {v:4,n:[address 7]}
+     * [address 7] = {v:5, n:null}
+     *
      */
     fun append(value: T) {
         val data = Data(value, null)
-        if (head.next == null) {
-            head.next = data
-        } else {
-            tail.next = data
-        }
+        tail.next = data
         tail = data
         length++
     }
