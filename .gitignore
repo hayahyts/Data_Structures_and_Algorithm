@@ -73,3 +73,8 @@ outTmp/
 /test.output
 /kotlin-native/dist
 kotlin-ide/
+/.idea/.gitignore
+/.idea/codeStyles/Project.xml
+/.idea/vcs.xml
+/.idea/codeStyles/codeStyleConfig.xml
+/.idea/uiDesigner.xml
