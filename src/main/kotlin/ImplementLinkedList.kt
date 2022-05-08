@@ -1,7 +1,7 @@
 class LinkedList<T>(value: T) {
     private var head: Node<T>
     private var tail: Node<T>
-    var length: Int
+    private var length: Int
 
     init {
         head = Node(value, null)
@@ -130,6 +130,10 @@ class LinkedList<T>(value: T) {
 
         return array
     }
+
+    fun getLength(): Int {
+        return length
+    }
 }
 
 class Node<T>(val value: T, var next: Node<T>?)
@@ -152,8 +156,8 @@ fun main() {
     val footballList = LinkedList("Chelsea")
     footballList.prepend("Barcelona")
     footballList.append("Real Madrid", 0)
-    footballList.append("Man U", footballList.length)
+    footballList.append("Man U", footballList.getLength())
     footballList.append("Sporting Lisbon")
-    footballList.append("Juventus", footballList.length - 1)
+    footballList.append("Juventus", footballList.getLength() - 1)
     printAllItemInLinkedList(footballList)
 }
