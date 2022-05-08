@@ -13,7 +13,9 @@ class LinkedList<T>(value: T) {
      * Given a list append value at the end
      *
      * Example:
-     * Given [2,3,4], append 5 at the end
+     * Given: [2,3,4], append 5 at the end
+     *
+     * Output: [2,3,4,5]
      *
      * Algorithm
      *
