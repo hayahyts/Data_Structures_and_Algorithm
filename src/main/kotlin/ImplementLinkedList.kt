@@ -81,7 +81,7 @@ class LinkedList<T>(value: T) {
      * We want to keep track of tail too, so if position == last position of list + 1
      * tail = [address 7]
      */
-    fun insert(value: T, index: Int) {
+    fun insert(index: Int, value: T) {
         if (index < 0) throw IndexOutOfBoundsException("Index must be greater than or equal to 0")
         if (index > length) throw java.lang.IndexOutOfBoundsException("Index must be less than or equal to length of list")
 
@@ -149,9 +149,9 @@ fun main() {
 
     val footballList = LinkedList("Chelsea")
     footballList.prepend("Barcelona")
-    footballList.insert("Real Madrid", 0)
-    footballList.insert("Man U", footballList.getLength())
+    footballList.insert(0, "Real Madrid")
+    footballList.insert(footballList.getLength(), "Man U")
     footballList.append("Sporting Lisbon")
-    footballList.insert("Juventus", footballList.getLength() - 1)
+    footballList.insert(footballList.getLength() - 1, "Juventus")
     printAllItemInLinkedList(footballList)
 }
