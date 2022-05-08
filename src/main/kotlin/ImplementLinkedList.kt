@@ -1,10 +1,10 @@
 class LinkedList<T>(value: T) {
-    private var head: Data<T>
-    private var tail: Data<T>
+    private var head: Node<T>
+    private var tail: Node<T>
     var length: Int
 
     init {
-        head = Data(value, null)
+        head = Node(value, null)
         tail = head
         length = 1
     }
@@ -35,9 +35,9 @@ class LinkedList<T>(value: T) {
      *
      */
     fun append(value: T) {
-        val data = Data(value, null)
-        tail.next = data
-        tail = data
+        val node = Node(value, null)
+        tail.next = node
+        tail = node
         length++
     }
 
@@ -53,8 +53,8 @@ class LinkedList<T>(value: T) {
      * Make this new Data the head of the list
      */
     fun prepend(value: T) {
-        val data = Data(value, head)
-        head = data
+        val node = Node(value, head)
+        head = node
         length++
     }
 
@@ -85,25 +85,25 @@ class LinkedList<T>(value: T) {
         if (index < 0) throw IndexOutOfBoundsException("Index must be greater than or equal to 0")
         if (index > length) throw java.lang.IndexOutOfBoundsException("Index must be less than or equal to length of list")
 
-        val data = Data(value, null)
+        val node = Node(value, null)
 
         when (index) {
             0 -> { // Append at start
-                data.next = head
-                head = data
+                node.next = head
+                head = node
                 length++
             }
             length -> { // Append at end
                 append(value)
             }
             else -> {
-                var previousItem: Data<T>? = head
-                var currentItem: Data<T>? = previousItem?.next
+                var previousItem: Node<T>? = head
+                var currentItem: Node<T>? = previousItem?.next
                 var currentIndex = 1
                 do {
                     if (currentIndex == index) {
-                        previousItem?.next = data
-                        data.next = currentItem
+                        previousItem?.next = node
+                        node.next = currentItem
                     }
 
                     previousItem = currentItem
@@ -120,7 +120,7 @@ class LinkedList<T>(value: T) {
      */
     fun toList(): ArrayList<T> {
         val array = ArrayList<T>()
-        var currentItem: Data<T>? = head
+        var currentItem: Node<T>? = head
 
         do {
             val value = currentItem?.value ?: return array
@@ -132,7 +132,7 @@ class LinkedList<T>(value: T) {
     }
 }
 
-class Data<T>(val value: T, var next: Data<T>?)
+class Node<T>(val value: T, var next: Node<T>?)
 
 fun <T> printAllItemInLinkedList(list: LinkedList<T>) {
     println("Array items: ${list.toList()}")
@@ -150,6 +150,7 @@ fun main() {
     printAllItemInLinkedList(strList)
 
     val footballList = LinkedList("Chelsea")
+    footballList.prepend("Barcelona")
     footballList.append("Real Madrid", 0)
     footballList.append("Man U", footballList.length)
     footballList.append("Sporting Lisbon")
