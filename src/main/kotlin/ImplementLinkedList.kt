@@ -1,6 +1,6 @@
 class LinkedList<T>(value: T) {
-    private var head: Node<T>
-    private var tail: Node<T>
+    private var head: Node<T>?
+    private var tail: Node<T>?
     private var length: Int
 
     init {
@@ -36,7 +36,7 @@ class LinkedList<T>(value: T) {
      */
     fun append(value: T) {
         val node = Node(value, null)
-        tail.next = node
+        tail?.next = node
         tail = node
         length++
     }
@@ -82,9 +82,7 @@ class LinkedList<T>(value: T) {
      * tail = [address 7]
      */
     fun insert(index: Int, value: T) {
-        if (index < 0) throw IndexOutOfBoundsException("Index must be greater than or equal to 0")
-        if (index > length) throw java.lang.IndexOutOfBoundsException("Index must be less than or equal to length of list")
-
+        verifyIndexWithinRange(index)
         val node = Node(value, null)
 
         when (index) {
@@ -92,12 +90,36 @@ class LinkedList<T>(value: T) {
             length -> append(value) // Insert at end
             else -> {
                 val leadingNode = traverseToIndex(index - 1)
-                val endingNode = leadingNode.next
-                leadingNode.next = node
+                val endingNode = leadingNode?.next
+                leadingNode?.next = node
                 node.next = endingNode
                 length++
             }
         }
+    }
+
+    private fun removeFirst() {
+        val nextNode = head?.next
+        head = nextNode
+        length--
+    }
+
+    fun remove(index: Int) {
+        verifyIndexWithinRange(index)
+        when (index) {
+            0 -> removeFirst()
+            else -> {
+                val leadingNode = traverseToIndex(index - 1)
+                val nodeToRemove = leadingNode?.next
+                val endingNode = nodeToRemove?.next
+                leadingNode?.next = endingNode
+            }
+        }
+    }
+
+    private fun verifyIndexWithinRange(index: Int) {
+        if (index < 0) throw IndexOutOfBoundsException("Index must be greater than or equal to 0")
+        if (index > length) throw java.lang.IndexOutOfBoundsException("Index must be less than or equal to length of list")
     }
 
     /**
@@ -110,12 +132,12 @@ class LinkedList<T>(value: T) {
      * Algorithm
      * Keep Going until you meet index
      */
-    private fun traverseToIndex(index: Int): Node<T> {
+    private fun traverseToIndex(index: Int): Node<T>? {
         var counter = 0
-        var currentNode: Node<T> = head
+        var currentNode: Node<T>? = head
 
-        while (counter < index) {
-            currentNode = currentNode.next ?: break
+        while (counter != index) {
+            currentNode = currentNode?.next ?: break
             counter++
         }
         return currentNode
@@ -160,10 +182,17 @@ fun main() {
     printAllItemInLinkedList(strList)
 
     val footballList = LinkedList("Chelsea")
+    printAllItemInLinkedList(footballList)
     footballList.prepend("Barcelona")
+    printAllItemInLinkedList(footballList)
     footballList.insert(0, "Real Madrid")
+    printAllItemInLinkedList(footballList)
     footballList.insert(footballList.getLength(), "Man U")
+    printAllItemInLinkedList(footballList)
     footballList.append("Sporting Lisbon")
+    printAllItemInLinkedList(footballList)
     footballList.insert(footballList.getLength() - 1, "Juventus")
+    printAllItemInLinkedList(footballList)
+    footballList.remove(1)
     printAllItemInLinkedList(footballList)
 }
