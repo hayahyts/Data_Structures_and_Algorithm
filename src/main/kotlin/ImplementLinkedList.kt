@@ -42,6 +42,23 @@ class LinkedList<T>(value: T) {
     }
 
     /**
+     * Given a list append value at the beginning
+     *
+     * Example:
+     * Given: [2,3,4], append 1 at the beginning
+     *
+     * Output: [1,2,3,4]
+     *
+     * Create new Data with next pointing to the current head
+     * Make this new Data the head of the list
+     */
+    fun prepend(value: T) {
+        val data = Data(value, head)
+        head = data
+        length++
+    }
+
+    /**
      * Given a list [2,3,4] append value 1 at position 1
      *
      * Initial memory structure
