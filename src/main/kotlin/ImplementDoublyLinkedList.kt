@@ -1,13 +1,11 @@
-/**
- * Implementation of Singly-Linked List
- */
-class LinkedList<T>(value: T) {
-    private var head: Node<T>?
-    private var tail: Node<T>?
+class DoublyLinkedList<T>(value: T) {
+    private var head: Node2<T>?
+    private var tail: Node2<T>?
     private var length: Int
 
     init {
-        head = Node(value, null)
+        val node = Node2(value, null, null)
+        head = node
         tail = head
         length = 1
     }
@@ -23,23 +21,23 @@ class LinkedList<T>(value: T) {
      * Algorithm
      *
      * Current memory
-     * [address 1] = {v:2,n:[address 3]}
-     * [address 3] = {v:2,n:[address 5]}
-     * [address 5] = {v:2,n:null}
+     * [address 1] = {v:2,p:null,n:[address 3]}
+     * [address 3] = {v:2,p:[address 1],n:[address 5]}
+     * [address 5] = {v:2,p:[address 3],n:null}
      *
      * To append 5 at the end,
      * Save 5 at [address 7]
      * Let next of tail point to new address [address 7]
      * Now set new address as tail of list
-     * [address 1] = {v:2,n:[address 3]}
-     * [address 3] = {v:3,n:[address 5]}
-     * [address 5] = {v:4,n:[address 7]}
-     * [address 7] = {v:5, n:null}
-     *
+     * [address 1] = {v:2,p:null,n:[address 3]}
+     * [address 3] = {v:2,p:[address 1],n:[address 5]}
+     * [address 5] = {v:2,p:[address 3],n:[address 7]}
+     * [address 7] = {v:5,p:[address 5],n:null}
      */
     fun append(value: T) {
-        val node = Node(value, null)
+        val node = Node2(value, null, null)
         tail?.next = node
+        node.previous = tail
         tail = node
         length++
     }
@@ -56,37 +54,17 @@ class LinkedList<T>(value: T) {
      * Make this new Data the head of the list
      */
     fun prepend(value: T) {
-        val node = Node(value, head)
+        val node = Node2(value, head, null)
         head = node
         length++
     }
 
     /**
      * Given a list [2,3,4] insert value 1 at position 1
-     *
-     * Initial memory structure
-     * [address 1] = {v:2, n:[address 3]}
-     * [address 3] = {v:3, n:[address 5]}
-     * [address 5] = {v:3, n:null]}
-     *
-     * Create [new data] at address 7
-     * [address 7] = {v:1, n:null}
-     *
-     * Start from head, while there are more data in the list and value not found,
-     * Set next item to current item
-     * If the value of the current index is equal to provided position,
-     * Let next of [new data] point to the current item
-     * [address 7] = {v:1, n:[address 1]}
-     *
-     * We want to keep track of head so if position is 1, then set head to [address 1]
-     * head = [address 7]
-     *
-     * We want to keep track of tail too, so if position == last position of list + 1
-     * tail = [address 7]
      */
     fun insert(index: Int, value: T) {
         verifyIndexWithinRange(index)
-        val node = Node(value, null)
+        val node = Node2(value, null, null)
 
         when (index) {
             0 -> prepend(value) // Insert at beginning
@@ -130,14 +108,14 @@ class LinkedList<T>(value: T) {
      *
      * Given: [2,3,4,5], index:2
      *
-     * Output: Node(2,next)
+     * Output: Node(2,previous,next)
      *
      * Algorithm
      * Keep Going until you meet index
      */
-    private fun traverseToIndex(index: Int): Node<T>? {
+    private fun traverseToIndex(index: Int): Node2<T>? {
         var counter = 0
-        var currentNode: Node<T>? = head
+        var currentNode: Node2<T>? = head
 
         while (counter != index) {
             currentNode = currentNode?.next ?: break
@@ -151,13 +129,12 @@ class LinkedList<T>(value: T) {
      */
     fun toList(): ArrayList<T> {
         val array = ArrayList<T>()
-        var currentItem: Node<T>? = head
+        var currentItem: Node2<T>? = head
 
-        do {
-            val value = currentItem?.value ?: return array
-            array.add(value)
+        while (currentItem != null) {
+            array.add(currentItem.value)
             currentItem = currentItem.next
-        } while (currentItem != null)
+        }
 
         return array
     }
@@ -167,24 +144,27 @@ class LinkedList<T>(value: T) {
     }
 }
 
-private class Node<T>(val value: T, var next: Node<T>?)
+class Node2<T>(
+    val value: T,
+    var next: Node2<T>?,
+    var previous: Node2<T>?
+)
 
-fun <T> printAllItemInLinkedList(list: LinkedList<T>) {
+fun <T> printAllItemInLinkedList(list: DoublyLinkedList<T>) {
     println("Array items: ${list.toList()}")
 }
 
 fun main() {
-    val intList = LinkedList(1)
+    val intList = DoublyLinkedList(1)
+    println(intList.toList())
     intList.append(3)
+    println(intList.toList())
     intList.append(5)
-    printAllItemInLinkedList(intList)
+    println(intList.toList())
+    intList.prepend(-1)
+    println(intList.toList())
 
-    val strList = LinkedList("Aryeetey")
-    strList.append("Solomon")
-    strList.append("Junior")
-    printAllItemInLinkedList(strList)
-
-    val footballList = LinkedList("Chelsea")
+    val footballList = DoublyLinkedList("Chelsea")
     printAllItemInLinkedList(footballList)
     footballList.prepend("Barcelona")
     printAllItemInLinkedList(footballList)
