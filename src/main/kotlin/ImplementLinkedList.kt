@@ -1,16 +1,10 @@
 /**
  * Implementation of Singly-Linked List
  */
-class LinkedList<T>(value: T) {
-    private var head: Node<T>?
-    private var tail: Node<T>?
-    private var length: Int
-
-    init {
-        head = Node(value, null)
-        tail = head
-        length = 1
-    }
+class LinkedList<T> {
+    private var head: Node<T>? = null
+    private var tail: Node<T>? = null
+    private var length: Int = 0
 
     /**
      * Given a list append value at the end
@@ -38,6 +32,7 @@ class LinkedList<T>(value: T) {
      *
      */
     fun append(value: T) {
+        if (shouldInitInstead(value)) return
         val node = Node(value, null)
         tail?.next = node
         tail = node
@@ -56,6 +51,7 @@ class LinkedList<T>(value: T) {
      * Make this new Data the head of the list
      */
     fun prepend(value: T) {
+        if (shouldInitInstead(value)) return
         val node = Node(value, head)
         head = node
         length++
@@ -86,6 +82,8 @@ class LinkedList<T>(value: T) {
      */
     fun insert(index: Int, value: T) {
         verifyIndexWithinRange(index)
+        if (shouldInitInstead(value)) return
+
         val node = Node(value, null)
 
         when (index) {
@@ -99,6 +97,17 @@ class LinkedList<T>(value: T) {
                 length++
             }
         }
+    }
+
+    private fun shouldInitInstead(value: T): Boolean {
+        val node = Node(value, null)
+        if (head == null) {
+            head = node
+            tail = node
+            length++
+            return true
+        }
+        return false
     }
 
     private fun removeFirst() {
@@ -162,6 +171,48 @@ class LinkedList<T>(value: T) {
         return array
     }
 
+    /**
+     * Given: [1 -> 2 -> 3]
+     *
+     * Output: [3 -> 2 -> 1]
+     */
+    fun reverse(): LinkedList<T> {
+        val linkedList = LinkedList<T>()
+        var currentNode = head
+        while (currentNode != null) { // O(n)
+            linkedList.prepend(currentNode.value)
+            currentNode = currentNode.next
+        }
+
+        return linkedList
+    }
+
+    /**
+     * Given: [1 -> 2 -> 3]
+     *
+     * Output: [3 -> 2 -> 1]
+     *
+     * tempNode = 2
+     * [1 -> 3]
+     *
+     *
+     * [2 -> 1 -> 3]
+     */
+    fun reverse2(): LinkedList<T> {
+        if (length == 0 || length == 1) return this
+
+        var leftNode = head
+        var rightNode = leftNode?.next
+        while (rightNode != null) {
+
+            leftNode?.next = rightNode.next
+            rightNode.next = leftNode
+
+            rightNode = rightNode.next
+        }
+        return this
+    }
+
     fun getLength(): Int {
         return length
     }
@@ -174,17 +225,20 @@ fun <T> printAllItemInLinkedList(list: LinkedList<T>) {
 }
 
 fun main() {
-    val intList = LinkedList(1)
+    val intList = LinkedList<Int>()
+    intList.append(1)
     intList.append(3)
     intList.append(5)
     printAllItemInLinkedList(intList)
 
-    val strList = LinkedList("Aryeetey")
+    val strList = LinkedList<String>()
+    strList.append("Aryeetey")
     strList.append("Solomon")
     strList.append("Junior")
     printAllItemInLinkedList(strList)
 
-    val footballList = LinkedList("Chelsea")
+    val footballList = LinkedList<String>()
+    footballList.append("Chelsea")
     printAllItemInLinkedList(footballList)
     footballList.prepend("Barcelona")
     printAllItemInLinkedList(footballList)
@@ -198,4 +252,6 @@ fun main() {
     printAllItemInLinkedList(footballList)
     footballList.remove(1)
     printAllItemInLinkedList(footballList)
+    printAllItemInLinkedList(footballList.reverse())
+    printAllItemInLinkedList(footballList.reverse2())
 }

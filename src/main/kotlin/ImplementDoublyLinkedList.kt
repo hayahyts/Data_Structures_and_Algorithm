@@ -54,7 +54,9 @@ class DoublyLinkedList<T>(value: T) {
      * Make this new Data the head of the list
      */
     fun prepend(value: T) {
-        val node = Node2(value, head, null)
+        val node = Node2(value, null, null)
+        head?.previous = node
+        node.next = head
         head = node
         length++
     }
@@ -73,15 +75,18 @@ class DoublyLinkedList<T>(value: T) {
                 val leadingNode = traverseToIndex(index - 1)
                 val endingNode = leadingNode?.next
                 leadingNode?.next = node
+                endingNode?.previous = node
                 node.next = endingNode
+                node.previous = leadingNode
                 length++
             }
         }
     }
 
     private fun removeFirst() {
-        val nextNode = head?.next
-        head = nextNode
+        val newHead = head?.next
+        newHead?.previous = null
+        head = newHead
         length--
     }
 
@@ -94,6 +99,7 @@ class DoublyLinkedList<T>(value: T) {
                 val nodeToRemove = leadingNode?.next
                 val endingNode = nodeToRemove?.next
                 leadingNode?.next = endingNode
+                endingNode?.previous = leadingNode
             }
         }
     }
