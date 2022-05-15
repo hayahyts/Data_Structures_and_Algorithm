@@ -1,3 +1,5 @@
+import stacks.Node
+
 /**
  * Implementation of Singly-Linked List
  */
@@ -33,7 +35,7 @@ class LinkedList<T> {
      */
     fun append(value: T) {
         if (shouldInitInstead(value)) return
-        val node = Node(value, null)
+        val node = stacks.Node(value, null)
         tail?.next = node
         tail = node
         length++
@@ -52,7 +54,7 @@ class LinkedList<T> {
      */
     fun prepend(value: T) {
         if (shouldInitInstead(value)) return
-        val node = Node(value, head)
+        val node = stacks.Node(value, head)
         head = node
         length++
     }
@@ -84,7 +86,7 @@ class LinkedList<T> {
         verifyIndexWithinRange(index)
         if (shouldInitInstead(value)) return
 
-        val node = Node(value, null)
+        val node = stacks.Node(value, null)
 
         when (index) {
             0 -> prepend(value) // Insert at beginning
@@ -100,7 +102,7 @@ class LinkedList<T> {
     }
 
     private fun shouldInitInstead(value: T): Boolean {
-        val node = Node(value, null)
+        val node = stacks.Node(value, null)
         if (head == null) {
             head = node
             tail = node
@@ -139,7 +141,7 @@ class LinkedList<T> {
      *
      * Given: [2,3,4,5], index:2
      *
-     * Output: Node(2,next)
+     * Output: stacks.Node(2,next)
      *
      * Algorithm
      * Keep Going until you meet index

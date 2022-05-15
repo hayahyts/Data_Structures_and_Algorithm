@@ -114,7 +114,7 @@ class DoublyLinkedList<T>(value: T) {
      *
      * Given: [2,3,4,5], index:2
      *
-     * Output: Node(2,previous,next)
+     * Output: stacks.Node(2,previous,next)
      *
      * Algorithm
      * Keep Going until you meet index
