@@ -172,44 +172,78 @@ class LinkedList<T> {
     }
 
     /**
-     * Given: [1 -> 2 -> 3]
+     * Given: [1, 2, 3, 4, 5, 6]
      *
-     * Output: [3 -> 2 -> 1]
+     * Output: [6, 5, 4, 3, 2, 1]
+     *
+     * Tail = head
+     * Tail = 1 -> 2
+     *
+     * 1 -> 2
+     * 2 -> 3
+     * 3 -> 4
+     * 4 -> 5
+     * 5 -> 6
+     * l=1,r=2
+     *
+     * =======
+     * 1 -> 2
+     * 2 -> 1
+     * 3 -> 4
+     * 4 -> 5
+     * 5 -> 6
+     * l=2,r=3
+     *
+     * =======
+     * 1 -> 2
+     * 2 -> 1
+     * 3 -> 2
+     * 4 -> 5
+     * 5 -> 6
+     * l=3,r=4
+     *
+     * =======
+     * 1 -> 2
+     * 2 -> 1
+     * 3 -> 2
+     * 4 -> 3
+     * 5 -> 6
+     * l=4,r=5
+     *
+     * =======
+     * 1 -> 2
+     * 2 -> 1
+     * 3 -> 2
+     * 4 -> 3
+     * 5 -> 4
+     * l=5,r=6
+     *
+     * =======
+     * 1 -> 2
+     * 2 -> 1
+     * 3 -> 2
+     * 4 -> 3
+     * 5 -> 4
+     * 6 -> 5
+     * l=6,r=null
+     *
+     *
      */
-    fun reverse(): LinkedList<T> {
-        val linkedList = LinkedList<T>()
-        var currentNode = head
-        while (currentNode != null) { // O(n)
-            linkedList.prepend(currentNode.value)
-            currentNode = currentNode.next
+    fun reverse4(): LinkedList<T> {
+        if (head?.next == null) return this
+
+        var prevNode: Node<T>? = null
+        var currNode = head
+
+        while (currNode != null) {
+            val nextNode = currNode.next
+            currNode.next = prevNode
+            prevNode = currNode
+            currNode = nextNode
         }
 
-        return linkedList
-    }
+        head = prevNode
 
-    /**
-     * Given: [1 -> 2 -> 3]
-     *
-     * Output: [3 -> 2 -> 1]
-     *
-     * tempNode = 2
-     * [1 -> 3]
-     *
-     *
-     * [2 -> 1 -> 3]
-     */
-    fun reverse2(): LinkedList<T> {
-        if (length == 0 || length == 1) return this
-
-        var leftNode = head
-        var rightNode = leftNode?.next
-        while (rightNode != null) {
-
-            leftNode?.next = rightNode.next
-            rightNode.next = leftNode
-
-            rightNode = rightNode.next
-        }
         return this
     }
 
@@ -227,31 +261,31 @@ fun <T> printAllItemInLinkedList(list: LinkedList<T>) {
 fun main() {
     val intList = LinkedList<Int>()
     intList.append(1)
+    intList.append(2)
     intList.append(3)
+    intList.append(4)
     intList.append(5)
-    printAllItemInLinkedList(intList)
+    intList.append(6)
+
+    printAllItemInLinkedList(intList.reverse4())
 
     val strList = LinkedList<String>()
     strList.append("Aryeetey")
     strList.append("Solomon")
     strList.append("Junior")
-    printAllItemInLinkedList(strList)
+    // printAllItemInLinkedList(strList)
 
     val footballList = LinkedList<String>()
     footballList.append("Chelsea")
-    printAllItemInLinkedList(footballList)
     footballList.prepend("Barcelona")
-    printAllItemInLinkedList(footballList)
     footballList.insert(0, "Real Madrid")
-    printAllItemInLinkedList(footballList)
     footballList.insert(footballList.getLength(), "Man U")
-    printAllItemInLinkedList(footballList)
     footballList.append("Sporting Lisbon")
-    printAllItemInLinkedList(footballList)
     footballList.insert(footballList.getLength() - 1, "Juventus")
-    printAllItemInLinkedList(footballList)
     footballList.remove(1)
-    printAllItemInLinkedList(footballList)
-    printAllItemInLinkedList(footballList.reverse())
-    printAllItemInLinkedList(footballList.reverse2())
+    // printAllItemInLinkedList(footballList)
+    // printAllItemInLinkedList(footballList.reverse())
+    //printAllItemInLinkedList(footballList.reverse2())
+
+    val hashSet = HashSet<Int>()
 }
