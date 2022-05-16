@@ -37,7 +37,7 @@ class Stack<T> {
 
         val holdingPointer = top
         if (top == bottom) {
-            bottom = holdingPointer?.next
+            bottom = null
         }
         top = holdingPointer?.next
         return holdingPointer?.value
