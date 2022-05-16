@@ -1,21 +1,25 @@
 package stacks
 
+/**
+ * Stacks use Linked List pointing downwards
+ *
+ * null <- a <- b <- c
+ */
 class Stack<T> {
-    var top: Node<T>? = null
-    var bottom: Node<T>? = null
-    var length: Int = 0
+    private var top: Node<T>? = null
+    private var bottom: Node<T>? = null
+    private var length: Int = 0
 
     fun push(value: T) { // O(n)
+        val newNode = Node(value)
         if (top == null) {
-            bottom = Node(value, null)
+            bottom = newNode
             top = bottom
-            length++
-            return
+        } else {
+            val holdingPointer = top
+            top = newNode
+            top?.next = holdingPointer
         }
-
-        val newNode = Node(value, null)
-        top?.next = newNode
-        top = newNode
         length++
     }
 
@@ -23,22 +27,20 @@ class Stack<T> {
         return top?.value
     }
 
+    /**
+     * Replace the last but one item as top
+     */
     fun pop(): T? {
-        if (bottom?.next == null) {
-            val value = bottom?.value
-            bottom = null
-            return value
+        if (top == null) {
+            return null
         }
 
-        var currentNode = bottom
-        while (currentNode?.next?.next !=null){
-            currentNode = currentNode.next
+        val holdingPointer = top
+        if (top == bottom) {
+            bottom = holdingPointer?.next
         }
-
-        val poppedValue = currentNode?.next?.value
-        top = currentNode
-        top?.next = null
-        return  poppedValue
+        top = holdingPointer?.next
+        return holdingPointer?.value
     }
 
     fun isEmpty(): Boolean {
@@ -50,7 +52,7 @@ class Stack<T> {
     }
 }
 
-class Node<T>(val value: T, var next: Node<T>?)
+class Node<T>(val value: T, var next: Node<T>? = null)
 
 fun main() {
     val browserHistory = Stack<String>()
